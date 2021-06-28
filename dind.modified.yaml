@@ -1,0 +1,75 @@
+components:
+  schemas:
+    Error:
+      properties:
+        code:
+          format: int32
+          type: integer
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+info:
+  description: A sample API that uses a petstore as an example to demonstrate features
+    in the OpenAPI 3.0 specification
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Petstore
+  version: 1.0.0
+openapi: 3.0.0
+paths:
+  /pets:
+    post:
+      description: Creates a new pet in the store. Duplicates are allowed
+      operationId: startBuild
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Schema for repository.
+              properties:
+                destination:
+                  description: Image push destination
+                  example: docker.io/akash7778/broker:v0.1.1
+                  type: string
+                dockerfile:
+                  description: Dockerfile location
+                  example: ./Dockerfile
+                  type: string
+                registry_secrets:
+                  description: secrets used to push image on container registry
+                  example: xxxxxxxxx
+                  type: string
+                url:
+                  description: URL of the git repository.
+                  example: https://github.com/elixir-cloud-aai/trs-filer.git
+                  type: string
+              required:
+              - url
+              - dockerfile
+              - destination
+              - registry_secrets
+              type: object
+        description: Pet to add to the store
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                example: Successful
+                type: string
+          description: pet response
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: unexpected error
+      x-openapi-router-controller: controllers
+servers:
+- url: http://localhost/

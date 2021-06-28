@@ -1,0 +1,74 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+  description: A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification
+  termsOfService: http://swagger.io/terms/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://localhost/
+paths:
+  /pets:
+    post:
+      description: Creates a new pet in the store. Duplicates are allowed
+      operationId: startBuild
+      requestBody:
+        description: Pet to add to the store
+        required: true
+        content:
+          application/json:
+            schema:
+                      description: Schema for repository.
+                      type: object
+                      properties:
+                        dockerfile:
+                          type: string
+                          description: Dockerfile location
+                          example: ./Dockerfile
+                        registry_secrets:
+                          type: string
+                          description: secrets used to push image on container registry
+                          example: xxxxxxxxx
+                        destination:
+                          type: string
+                          description: Image push destination
+                          example: docker.io/akash7778/broker:v0.1.1
+                        url:
+                          type: string
+                          description: URL of the git repository.
+                          example: https://github.com/elixir-cloud-aai/trs-filer.git
+                      required:
+                        - url
+                        - dockerfile
+                        - destination
+                        - registry_secrets
+              
+      responses:
+        '200':
+          description: pet response
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Successful"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
